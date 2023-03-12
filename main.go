@@ -50,9 +50,22 @@ func GetBookByID(c *gin.Context) {
 	c.JSON(http.StatusNotFound, "data not found")
 }
 
+func AddBook(c *gin.Context) {
+	var newBook book
+	if err := c.BindJSON(&newBook); err != nil {
+		return 
+	}
+	
+	books = append(books, newBook)
+	c.JSON(http.StatusOK, newBook)
+}
+
+
+
 func main() {
 	router := gin.Default()
 	router.GET("/books", GetBooks)
 	router.GET("/book/:id", GetBookByID)
+	router.POST("/books", AddBook)
 	router.Run("localhost:8080")
 }
